@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <title>Game Zone</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .game-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* Tic Tac Toe styles */
+        #ticTacToeGame table {
+            margin: 20px auto;
+        }
+
+        #ticTacToeGame td {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid #ccc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #ticTacToeGame td:hover {
+            background-color: #ddd;
+        }
+
+        /* Rock Paper Scissors styles */
+        .rps-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .rps-options img {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .rps-options img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Result animations */
+        .result {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .win {
+            animation: winAnimation 0.5s ease forwards;
+            color: green;
+        }
+
+        .draw {
+            animation: drawAnimation 0.5s ease forwards;
+            color: blue;
+        }
+
+        .lose {
+            color: red;
+        }
+
+        @keyframes winAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes drawAnimation {
+            0%, 100% { transform: rotate(0); }
+            25% { transform: rotate(10deg); }
+            50% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Game Zone</h1>
+        <div id="gameSelection">
+            <button onclick="playTicTacToe()">Play Tic Tac Toe</button>
+            <button onclick="playRockPaperScissors()">Play Rock Paper Scissors</button>
+            <button onclick="playGuessNumber()">Play Guess the Number</button>
+        </div>
+
+        <!-- Tic Tac Toe Game -->
+        <div id="ticTacToeGame" class="game-container">
+            <h2>Tic Tac Toe</h2>
+            <table>
+                <tr>
+                    <td id="ticTacToeCell0" onclick="placeSymbol(0)"></td>
+                    <td id="ticTacToeCell1" onclick="placeSymbol(1)"></td>
+                    <td id="ticTacToeCell2" onclick="placeSymbol(2)"></td>
+                </tr>
+                <tr>
+                    <td id="ticTacToeCell3" onclick="placeSymbol(3)"></td>
+                    <td id="ticTacToeCell4" onclick="placeSymbol(4)"></td>
+                    <td id="ticTacToeCell5" onclick="placeSymbol(5)"></td>
+                </tr>
+                <tr>
+                    <td id="ticTacToeCell6" onclick="placeSymbol(6)"></td>
+                    <td id="ticTacToeCell7" onclick="placeSymbol(7)"></td>
+                    <td id="ticTacToeCell8" onclick="placeSymbol(8)"></td>
+                </tr>
+            </table>
+            <p id="ticTacToeResult" class="result"></p>
+        </div>
+
+        <!-- Rock Paper Scissors Game -->
+        <div id="rockPaperScissorsGame" class="game-container">
+            <h2>Rock Paper Scissors</h2>
+            <div class="rps-options">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTfZq7WC6D57-WhT_ybN0OC7yn-JiAQM7cPQ&s" onclick="playRock()" alt="Rock">
+                <img src="https://wrpsa.com/wp-content/uploads/2021/08/paper-200x187.png" onclick="playPaper()" alt="Paper">
+                <img src="https://wrpsa.com/wp-content/uploads/2021/08/scissors.png" onclick="playScissors()" alt="Scissors">
+            </div>
+            <p id="rockPaperScissorsResult" class="result"></p>
+        </div>
+
+        <!-- Guess the Number Game -->
+        <div id="guessNumberGame" class="game-container">
+            <h2>Guess the Number</h2>
+            <p>Guess a number between 1 and 100:</p>
+            <input type="number" id="userGuess" min="1" max="100">
+            <button onclick="checkGuess()">Submit</button>
+            <p id="guessNumberResult" class="result"></p>
+        </div>
+    </div>
+
+    <script>
+        // Function to show Tic Tac Toe game
+        function playTicTacToe() {
+            hideAllGames();
+            document.getElementById('ticTacToeGame').style.display = 'block';
+            initializeTicTacToe();
+        }
+
+        // Function to show Rock Paper Scissors game
+        function playRockPaperScissors() {
+            hideAllGames();
+            document.getElementById('rockPaperScissorsGame').style.display = 'block';
+        }
+
+        // Function to show Guess the Number game
+        function playGuessNumber() {
+            hideAllGames();
+            document.getElementById('guessNumberGame').style.display = 'block';
+        }
+
+        // Function to hide all games
+        function hideAllGames() {
+            document.getElementById('ticTacToeGame').style.display = 'none';
+            document.getElementById('rockPaperScissorsGame').style.display = 'none';
+            document.getElementById('guessNumberGame').style.display = 'none';
+        }
+
+        // Function to initialize Tic Tac Toe game
+        function initializeTicTacToe() {
+            ticTacToeBoard = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameEnded = false;
+            document.getElementById('ticTacToeResult').innerText = '';
+            renderTicTacToe();
+        }
+
+        // Function to render Tic Tac Toe board
+        function renderTicTacToe() {
+            for (let i = 0; i < 9; i++) {
+                const cell = document.getElementById(`ticTacToeCell${i}`);
+                cell.innerText = ticTacToeBoard[i];
+            }
+        }
+
+        // Function to place 'X' or 'O' in Tic Tac Toe
+        function placeSymbol(index) {
+            if (!gameEnded && ticTacToeBoard[index] === '') {
+                ticTacToeBoard[index] = currentPlayer;
+                renderTicTacToe();
+                checkWinner();
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        // Function to check for a winner in Tic Tac Toe
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (let combination of winningCombinations) {
+                const [a, b, c] = combination;
+                if (
+                    ticTacToeBoard[a] &&
+                    ticTacToeBoard[a] === ticTacToeBoard[b] &&
+                    ticTacToeBoard[a] === ticTacToeBoard[c]
+                ) {
+                    document.getElementById('ticTacToeResult').innerText = `${currentPlayer} wins!`;
+                    document.getElementById('ticTacToeResult').classList.add('win');
+                    gameEnded = true;
+                    return;
+                }
+            }
+
+            if (!ticTacToeBoard.includes('')) {
+                document.getElementById('ticTacToeResult').innerText = `It's a draw!`;
+                document.getElementById('ticTacToeResult').classList.add('draw');
+                gameEnded = true;
+            }
+        }
+
+        // Function to play Rock in Rock Paper Scissors
+        function playRock() {
+            const computerChoice = Math.floor(Math.random() * 3);
+            displayResult('rock', computerChoice);
+        }
+
+        // Function to play Paper in Rock Paper Scissors
+        function playPaper() {
+            const computerChoice = Math.floor(Math.random() * 3);
+            displayResult('paper', computerChoice);
+        }
+
+        // Function to play Scissors in Rock Paper Scissors
+        function playScissors() {
+            const computerChoice = Math.floor(Math.random() * 3);
+            displayResult('scissors', computerChoice);
+        }
+
+        // Function to display result for Rock Paper Scissors
+        function displayResult(userChoice, computerChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const userIndex = choices.indexOf(userChoice);
+            const computerIndex = computerChoice;
+
+            const result = (userIndex - computerIndex + 3) % 3;
+
+            const resultElement = document.getElementById('rockPaperScissorsResult');
+            if (result === 0) {
+                resultElement.innerText = 'It\'s a draw!';
+                resultElement.classList.add('draw');
+            } else if (result === 1) {
+                resultElement.innerText = 'You win!';
+                resultElement.classList.add('win');
+            } else {
+                resultElement.innerText = 'You lose!';
+                resultElement.classList.add('lose');
+            }
+        }
+
+        // Function to check user's guess in Guess the Number game
+        function checkGuess() {
+            const userGuess = parseInt(document.getElementById('userGuess').value);
+            const randomNumber = Math.floor(Math.random() * 100) + 1;
+
+            if (userGuess === randomNumber) {
+                document.getElementById('guessNumberResult').innerText = `Congratulations! You guessed it right! The number was ${randomNumber}.`;
+                document.getElementById('guessNumberResult').classList.add('win');
+            } else {
+                document.getElementById('guessNumberResult').innerText = `Sorry, wrong guess! The number was ${randomNumber}.`;
+                document.getElementById('guessNumberResult').classList.add('lose');
+            }
+        }
+    </script>
+</body>
+</html>
