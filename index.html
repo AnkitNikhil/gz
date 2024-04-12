@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,19 +112,65 @@
         }
 
         @keyframes winAnimation {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         @keyframes drawAnimation {
-            0%, 100% { transform: rotate(0); }
-            25% { transform: rotate(10deg); }
-            50% { transform: rotate(-10deg); }
-            75% { transform: rotate(10deg); }
+
+            0%,
+            100% {
+                transform: rotate(0);
+            }
+
+            25% {
+                transform: rotate(10deg);
+            }
+
+            50% {
+                transform: rotate(-10deg);
+            }
+
+            75% {
+                transform: rotate(10deg);
+            }
+        }
+
+        /* Footer styles */
+        .footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 20px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Welcome to Game Zone</h1>
@@ -160,9 +207,12 @@
         <div id="rockPaperScissorsGame" class="game-container">
             <h2>Rock Paper Scissors</h2>
             <div class="rps-options">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTfZq7WC6D57-WhT_ybN0OC7yn-JiAQM7cPQ&s" onclick="playRock()" alt="Rock">
-                <img src="https://wrpsa.com/wp-content/uploads/2021/08/paper-200x187.png" onclick="playPaper()" alt="Paper">
-                <img src="https://wrpsa.com/wp-content/uploads/2021/08/scissors.png" onclick="playScissors()" alt="Scissors">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTfZq7WC6D57-WhT_ybN0OC7yn-JiAQM7cPQ&s"
+                    onclick="playRock()" alt="Rock">
+                <img src="https://wrpsa.com/wp-content/uploads/2021/08/paper-200x187.png" onclick="playPaper()"
+                    alt="Paper">
+                <img src="https://wrpsa.com/wp-content/uploads/2021/08/scissors.png" onclick="playScissors()"
+                    alt="Scissors">
             </div>
             <p id="rockPaperScissorsResult" class="result"></p>
         </div>
@@ -175,6 +225,14 @@
             <button onclick="checkGuess()">Submit</button>
             <p id="guessNumberResult" class="result"></p>
         </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 Copyright Game Zone. All rights reserved.</p>
+            <p>Designed and created by <a href="https://ankitnikhil.github.io/a/" style="color: chartreuse;">Ankit
+                    Nikhil</a></p>
+        </div>
+
     </div>
 
     <script>
@@ -319,4 +377,5 @@
         }
     </script>
 </body>
+
 </html>
